@@ -1,0 +1,1932 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>
+			Akshay Keerth | Creative Developer & Digital Experience Designer
+		</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			*,
+			*::before,
+			*::after {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			@font-face {
+				font-family: "Brier";
+				src: url("fonts/brier-bold.otf") format("opentype");
+				font-weight: 800;
+				font-display: swap;
+			}
+
+			:root {
+				--bg: #0a0a0a;
+				--bg-alt: #0f0f0f;
+				--bg-card: #111;
+				--text: #f5f5f5;
+				--text-dim: #888;
+				--lime: #ccff00;
+				--cyan: #00f0ff;
+				--accent: var(--lime);
+				--border: rgba(255, 255, 255, 0.06);
+				--font-sans: "Inter", sans-serif;
+				--font-display: "Space Grotesk", sans-serif;
+			}
+
+			html {
+				scroll-behavior: smooth;
+				background: var(--bg);
+			}
+
+			body {
+				font-family: var(--font-sans);
+				background: var(--bg);
+				color: var(--text);
+				line-height: 1.5;
+				overflow-x: hidden;
+				-webkit-font-smoothing: antialiased;
+			}
+
+			::selection {
+				background: var(--lime);
+				color: #000;
+			}
+
+			::-webkit-scrollbar {
+				width: 6px;
+			}
+			::-webkit-scrollbar-track {
+				background: var(--bg);
+			}
+			::-webkit-scrollbar-thumb {
+				background: var(--lime);
+			}
+
+			a {
+				color: inherit;
+				text-decoration: none;
+			}
+
+			img {
+				max-width: 100%;
+				display: block;
+			}
+
+			.container {
+				max-width: 1280px;
+				margin: 0 auto;
+				padding: 0 40px;
+			}
+
+    /* ── CURSOR ── */
+			.cursor-glow {
+				position: fixed;
+				width: 500px;
+				height: 500px;
+				border-radius: 50%;
+				background: radial-gradient(
+					circle at center,
+					rgba(204, 255, 0, 0.15) 0%,
+					rgba(204, 255, 0, 0.06) 30%,
+					transparent 60%
+				);
+				pointer-events: none;
+				transform: translate(-50%, -50%);
+				z-index: 0;
+				transition:
+					opacity 0.3s,
+					width 0.6s,
+					height 0.6s;
+				will-change: transform;
+			}
+			.cursor-dot {
+				position: fixed;
+				width: 8px;
+				height: 8px;
+				background: var(--lime);
+				box-shadow:
+					0 0 12px rgba(204, 255, 0, 0.6),
+					0 0 24px rgba(204, 255, 0, 0.2);
+				pointer-events: none;
+				transform: translate(-50%, -50%);
+				z-index: 101;
+				transition:
+					width 0.3s,
+					height 0.3s,
+					background 0.3s,
+					box-shadow 0.3s;
+				will-change: transform;
+			}
+			.cursor-ring {
+				position: fixed;
+				width: 36px;
+				height: 36px;
+				border: 1.5px solid rgba(204, 255, 0, 0.25);
+				box-shadow:
+					0 0 20px rgba(204, 255, 0, 0.05),
+					inset 0 0 20px rgba(204, 255, 0, 0.02);
+				pointer-events: none;
+				transform: translate(-50%, -50%);
+				z-index: 100;
+				transition:
+					width 0.4s,
+					height 0.4s,
+					border-color 0.4s,
+					box-shadow 0.4s;
+				will-change: transform;
+			}
+
+			/* ── PARALLAX LAYER ── */
+			.parallax-layer {
+				position: absolute;
+				pointer-events: none;
+				z-index: 0;
+				will-change: transform;
+			}
+
+			/* ── HOVER TILT ── */
+			.tilt-wrap {
+				perspective: 800px;
+			}
+			.tilt-inner {
+				transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+				will-change: transform;
+			}
+
+			/* ── NAV ── */
+			nav {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				z-index: 100;
+				padding: 20px 40px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				transition:
+					background 0.4s,
+					backdrop-filter 0.4s;
+			}
+			nav.scrolled {
+				background: rgba(10, 10, 10, 0.85);
+				backdrop-filter: blur(20px);
+				-webkit-backdrop-filter: blur(20px);
+				border-bottom: 1px solid var(--border);
+			}
+			.nav-logo {
+				font-family: var(--font-display);
+				font-weight: 700;
+				font-size: 1rem;
+				letter-spacing: 0.12em;
+				color: var(--text);
+			}
+			.nav-logo span {
+				color: var(--lime);
+			}
+			.nav-links {
+				display: flex;
+				gap: 32px;
+				list-style: none;
+			}
+			.nav-links a {
+				font-size: 0.8rem;
+				font-weight: 500;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				color: var(--text-dim);
+				transition: color 0.3s;
+				position: relative;
+			}
+			.nav-links a::after {
+				content: "";
+				position: absolute;
+				bottom: -4px;
+				left: 0;
+				width: 0;
+				height: 1.5px;
+				background: var(--lime);
+				transition: width 0.3s;
+			}
+			.nav-links a:hover {
+				color: var(--text);
+			}
+			.nav-links a:hover::after {
+				width: 100%;
+			}
+			.nav-cta {
+				padding: 12px 28px;
+				border: 1px solid var(--lime);
+				color: #000 !important;
+				background: var(--lime);
+				font-weight: 700 !important;
+				font-size: 0.85rem !important;
+				letter-spacing: 0.04em !important;
+				text-transform: none !important;
+				position: relative;
+				overflow: hidden;
+				transition: color 0.3s !important;
+			}
+			.nav-cta::after {
+				display: none !important;
+			}
+			.nav-cta::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: #fff;
+				transform: scaleX(0);
+				transform-origin: left;
+				transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+			}
+			.nav-cta:hover {
+				color: #000 !important;
+				background: var(--lime);
+				transform: translateY(-2px);
+				box-shadow: 0 6px 24px rgba(204, 255, 0, 0.3);
+			}
+			.nav-cta:hover::before {
+				transform: scaleX(1);
+			}
+			.nav-cta .nav-cta-text {
+				position: relative;
+				z-index: 1;
+			}
+
+			/* ── HERO ── */
+			.hero {
+				position: relative;
+				min-height: 100vh;
+				display: flex;
+				align-items: center;
+				padding: 120px 0 60px;
+				overflow: hidden;
+			}
+			.hero-bg-grid {
+				position: absolute;
+				inset: 0;
+				background-image:
+					linear-gradient(
+						rgba(255, 255, 255, 0.025) 1px,
+						transparent 1px
+					),
+					linear-gradient(
+						90deg,
+						rgba(255, 255, 255, 0.025) 1px,
+						transparent 1px
+					);
+				background-size: 60px 60px;
+				mask-image: radial-gradient(
+					ellipse 60% 60% at 50% 50%,
+					black 20%,
+					transparent 70%
+				);
+				-webkit-mask-image: radial-gradient(
+					ellipse 60% 60% at 50% 50%,
+					black 20%,
+					transparent 70%
+				);
+				pointer-events: none;
+			}
+			.hero-bg-grid-focus {
+				position: absolute;
+				inset: 0;
+				background-image:
+					linear-gradient(
+						rgba(204, 255, 0, 0.08) 1px,
+						transparent 1px
+					),
+					linear-gradient(
+						90deg,
+						rgba(204, 255, 0, 0.08) 1px,
+						transparent 1px
+					);
+				background-size: 60px 60px;
+				mask-image: radial-gradient(
+					ellipse 200px 200px at 50% 50%,
+					black 30%,
+					transparent 70%
+				);
+				-webkit-mask-image: radial-gradient(
+					ellipse 200px 200px at 50% 50%,
+					black 30%,
+					transparent 70%
+				);
+				pointer-events: none;
+				transition: mask-image 0.1s;
+			}
+			.hero-shine {
+				position: absolute;
+				top: -30%;
+				left: 50%;
+				width: 600px;
+				height: 600px;
+				background: radial-gradient(
+					circle at center,
+					rgba(204, 255, 0, 0.08),
+					transparent 70%
+				);
+				transform: translate(-50%, 0);
+				pointer-events: none;
+				animation: heroPulse 6s ease-in-out infinite alternate;
+			}
+			@keyframes heroPulse {
+				0% {
+					opacity: 0.5;
+					transform: translate(-50%, -10%) scale(1);
+				}
+				100% {
+					opacity: 1;
+					transform: translate(-50%, 10%) scale(1.15);
+				}
+			}
+
+			.hero-content {
+				position: relative;
+				z-index: 2;
+			}
+			.hero-tag {
+				display: inline-block;
+				font-size: 0.75rem;
+				font-weight: 600;
+				letter-spacing: 0.15em;
+				text-transform: uppercase;
+				color: var(--lime);
+				border: 1px solid rgba(204, 255, 0, 0.2);
+				padding: 6px 16px;
+				margin-bottom: 28px;
+				opacity: 0;
+				transform: translateY(20px);
+				animation: fadeUp 0.8s 1.2s forwards;
+			}
+			.hero h1 {
+				font-family: "Brier", var(--font-display);
+				font-size: clamp(3rem, 10vw, 8rem);
+				font-weight: 800;
+				line-height: 1.25;
+				letter-spacing: -0.03em;
+				margin-bottom: 20px;
+				opacity: 0;
+				transform: translateY(30px);
+				animation: fadeUp 0.8s 1.4s forwards;
+			}
+			.hero h1 .line {
+				display: block;
+				overflow: hidden;
+			}
+			.hero h1 .line span {
+				display: block;
+				animation: lineUp 0.8s 1.4s forwards;
+			}
+			.hero h1 .highlight {
+				color: var(--lime);
+			}
+			.hero p {
+				font-size: clamp(1rem, 1.6vw, 1.25rem);
+				color: var(--text-dim);
+				max-width: 580px;
+				line-height: 1.6;
+				margin-bottom: 40px;
+				opacity: 0;
+				transform: translateY(20px);
+				animation: fadeUp 0.8s 1.8s forwards;
+			}
+			.hero-actions {
+				display: flex;
+				gap: 12px;
+				flex-wrap: wrap;
+				opacity: 0;
+				transform: translateY(20px);
+				animation: fadeUp 0.8s 2s forwards;
+			}
+
+			.hero-scroll {
+				position: absolute;
+				bottom: 24px;
+				left: 50%;
+				transform: translateX(-50%);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 8px;
+				opacity: 0;
+				animation: fadeUp 0.8s 2.4s forwards;
+			}
+			.hero-scroll span {
+				font-size: 0.65rem;
+				letter-spacing: 0.15em;
+				text-transform: uppercase;
+				color: var(--text-dim);
+			}
+			.scroll-indicator {
+				width: 1px;
+				height: 40px;
+				background: linear-gradient(
+					to bottom,
+					var(--lime),
+					transparent
+				);
+				animation: scrollBounce 2s ease-in-out infinite;
+			}
+			@keyframes scrollBounce {
+				0%,
+				100% {
+					transform: scaleY(0.3);
+					opacity: 0.3;
+				}
+				50% {
+					transform: scaleY(1);
+					opacity: 1;
+				}
+			}
+
+			/* ── BUTTONS (sharp corners) ── */
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 8px;
+				padding: 14px 32px;
+				font-size: 0.85rem;
+				font-weight: 600;
+				border: none;
+				cursor: pointer;
+				transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+				letter-spacing: 0.02em;
+			}
+			.btn-primary {
+				background: var(--lime);
+				color: #000;
+			}
+			.btn-primary:hover {
+				transform: translateY(-3px);
+				box-shadow: 0 8px 32px rgba(204, 255, 0, 0.25);
+			}
+			.btn-outline {
+				background: transparent;
+				color: var(--text);
+				border: 1px solid var(--border);
+			}
+			.btn-outline:hover {
+				border-color: var(--text);
+				transform: translateY(-3px);
+			}
+
+			/* ── FADE UP ── */
+			@keyframes fadeUp {
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+			@keyframes lineUp {
+				from {
+					transform: translateY(100%);
+				}
+				to {
+					transform: translateY(0);
+				}
+			}
+
+			/* ── SECTION BASE ── */
+			section {
+				padding: 90px 0;
+				position: relative;
+			}
+			.section-label {
+				font-size: 0.7rem;
+				font-weight: 600;
+				letter-spacing: 0.2em;
+				text-transform: uppercase;
+				color: var(--lime);
+				margin-bottom: 12px;
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+			.section-label::before {
+				content: "";
+				width: 32px;
+				height: 1px;
+				background: var(--lime);
+			}
+			.section-header {
+				margin-bottom: 56px;
+			}
+			.section-header h2 {
+				font-family: var(--font-display);
+				font-size: clamp(2.2rem, 5vw, 4rem);
+				font-weight: 800;
+				letter-spacing: -0.02em;
+				line-height: 1.1;
+			}
+			.section-header h2 .highlight {
+				color: var(--lime);
+			}
+			.section-header p {
+				color: var(--text-dim);
+				font-size: 1rem;
+				max-width: 480px;
+				margin-top: 12px;
+			}
+
+			.reveal {
+				opacity: 0;
+				transform: translateY(40px);
+				transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+			}
+			.reveal.visible {
+				opacity: 1;
+				transform: translateY(0);
+			}
+			.reveal-scale {
+				opacity: 0;
+				transform: scale(0.92);
+				transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+			}
+			.reveal-scale.visible {
+				opacity: 1;
+				transform: scale(1);
+			}
+			.reveal-right {
+				opacity: 0;
+				transform: translateX(40px);
+				transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+			}
+			.reveal-right.visible {
+				opacity: 1;
+				transform: translateX(0);
+			}
+			.reveal-left {
+				opacity: 0;
+				transform: translateX(-40px);
+				transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+			}
+			.reveal-left.visible {
+				opacity: 1;
+				transform: translateX(0);
+			}
+
+			/* ── MARQUEE ── */
+			.marquee-wrap {
+				overflow: hidden;
+				padding: 32px 0;
+				border-top: 1px solid var(--border);
+				border-bottom: 1px solid var(--border);
+			}
+			.marquee {
+				display: flex;
+				gap: 48px;
+				width: max-content;
+				animation: marquee 30s linear infinite;
+			}
+			.marquee-item {
+				display: flex;
+				align-items: center;
+				gap: 48px;
+				font-family: var(--font-display);
+				font-size: 0.9rem;
+				font-weight: 600;
+				letter-spacing: 0.1em;
+				text-transform: uppercase;
+				color: var(--text-dim);
+				white-space: nowrap;
+			}
+			.marquee-item .dot {
+				width: 6px;
+				height: 6px;
+				background: var(--lime);
+				flex-shrink: 0;
+			}
+			@keyframes marquee {
+				0% {
+					transform: translateX(0);
+				}
+				100% {
+					transform: translateX(-50%);
+				}
+			}
+
+			/* ── SERVICES ── */
+			.services-grid {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 2px;
+				background: var(--border);
+			}
+			.service-card {
+				background: var(--bg-alt);
+				padding: 40px 32px;
+				transition: all 0.4s;
+				position: relative;
+				overflow: hidden;
+			}
+			.service-card::before {
+				content: "";
+				position: absolute;
+				inset: 0;
+				background: linear-gradient(
+					135deg,
+					transparent,
+					rgba(204, 255, 0, 0.04)
+				);
+				opacity: 0;
+				transition: opacity 0.4s;
+			}
+			.service-card:hover::before {
+				opacity: 1;
+			}
+			.service-card:hover {
+				background: #141414;
+			}
+			.service-num {
+				font-family: var(--font-display);
+				font-size: 0.65rem;
+				font-weight: 600;
+				color: var(--lime);
+				margin-bottom: 16px;
+				letter-spacing: 0.05em;
+			}
+			.service-card h3 {
+				font-family: var(--font-display);
+				font-size: 1.1rem;
+				font-weight: 700;
+				margin-bottom: 10px;
+				position: relative;
+			}
+			.service-card p {
+				font-size: 0.85rem;
+				color: var(--text-dim);
+				line-height: 1.6;
+				position: relative;
+			}
+
+			/* ── PROJECTS ── */
+			.projects-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 16px;
+			}
+			.project-card {
+				position: relative;
+				overflow: hidden;
+				background: var(--bg-card);
+				aspect-ratio: 4 / 3;
+				cursor: pointer;
+				border: 1px solid var(--border);
+				transition:
+					border-color 0.3s,
+					transform 0.4s;
+			}
+			.project-card:hover {
+				border-color: rgba(204, 255, 0, 0.2);
+				transform: scale(0.97);
+			}
+			.project-card .project-bg {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				transition:
+					transform 0.6s,
+					filter 0.5s;
+				filter: saturate(0.8) brightness(0.7);
+			}
+			.project-card:hover .project-bg {
+				transform: scale(1.05);
+				filter: saturate(1) brightness(0.9);
+			}
+			.project-overlay {
+				position: absolute;
+				inset: 0;
+				background: linear-gradient(
+					to top,
+					rgba(0, 0, 0, 0.85) 0%,
+					transparent 60%
+				);
+				display: flex;
+				flex-direction: column;
+				justify-content: flex-end;
+				padding: 28px;
+			}
+			.project-overlay .tag {
+				font-size: 0.6rem;
+				font-weight: 600;
+				letter-spacing: 0.15em;
+				text-transform: uppercase;
+				color: var(--lime);
+				margin-bottom: 6px;
+			}
+			.project-overlay h3 {
+				font-family: var(--font-display);
+				font-size: 1.3rem;
+				font-weight: 700;
+			}
+			.project-overlay p {
+				font-size: 0.8rem;
+				color: var(--text-dim);
+				margin-top: 4px;
+			}
+			.project-arrow {
+				position: absolute;
+				top: 20px;
+				right: 20px;
+				width: 36px;
+				height: 36px;
+				background: var(--lime);
+				color: #000;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 1.1rem;
+				opacity: 0;
+				transform: translateY(-8px);
+				transition: all 0.4s;
+			}
+			.project-card:hover .project-arrow {
+				opacity: 1;
+				transform: translateY(0);
+			}
+
+			/* ── ABOUT ── */
+			.about-wrap {
+				max-width: 680px;
+				margin: 0 auto;
+			}
+			.about-image {
+				position: relative;
+				overflow: hidden;
+				aspect-ratio: 3 / 4;
+				background: var(--bg-card);
+				border: 1px solid var(--border);
+			}
+			.about-image .placeholder {
+				width: 100%;
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 4rem;
+				font-weight: 800;
+				color: rgba(255, 255, 255, 0.03);
+				letter-spacing: -0.03em;
+				background: linear-gradient(135deg, #111, #181818);
+			}
+			.about-image .glow {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(
+					135deg,
+					rgba(204, 255, 0, 0.06),
+					transparent 60%
+				);
+			}
+			.about-text h3 {
+				font-family: var(--font-display);
+				font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+				font-weight: 700;
+				margin-bottom: 16px;
+				line-height: 1.3;
+			}
+			.about-text p {
+				color: var(--text-dim);
+				font-size: 0.95rem;
+				line-height: 1.7;
+				margin-bottom: 28px;
+			}
+			.stats {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 20px;
+				padding-top: 28px;
+				border-top: 1px solid var(--border);
+			}
+			.stat h4 {
+				font-family: var(--font-display);
+				font-size: 1.8rem;
+				font-weight: 800;
+				color: var(--lime);
+			}
+			.stat p {
+				font-size: 0.7rem;
+				text-transform: uppercase;
+				letter-spacing: 0.1em;
+				color: var(--text-dim);
+				margin-bottom: 0;
+			}
+
+			/* ── SPLIT SECTION (Lando style) ── */
+			.split-section {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 2px;
+				background: var(--border);
+				overflow: hidden;
+			}
+			.split-item {
+				background: var(--bg-alt);
+				padding: 60px 48px;
+				text-align: center;
+				transition:
+					background 0.4s,
+					transform 0.4s;
+				cursor: pointer;
+				position: relative;
+				overflow: hidden;
+			}
+			.split-item:hover {
+				background: #141414;
+			}
+			.split-item .big {
+				font-family: var(--font-display);
+				font-size: clamp(2.5rem, 4vw, 4rem);
+				font-weight: 800;
+				letter-spacing: -0.02em;
+				line-height: 1;
+			}
+			.split-item .sub {
+				font-size: 0.9rem;
+				color: var(--text-dim);
+				margin-top: 10px;
+			}
+			.split-item .big .highlight {
+				color: var(--lime);
+			}
+
+			/* ── PORTFOLIO LINK SECTION (Awwwards-style) ── */
+			.portfolio-link-section {
+				padding: 100px 0;
+				position: relative;
+				overflow: hidden;
+			}
+			.portfolio-link-section::before {
+				content: "";
+				position: absolute;
+				inset: 0;
+				background: radial-gradient(
+					ellipse at 50% 50%,
+					rgba(204, 255, 0, 0.04),
+					transparent 70%
+				);
+				pointer-events: none;
+			}
+			.portfolio-link-inner {
+				position: relative;
+				text-align: center;
+				padding: 80px 60px;
+				border: 1px solid var(--border);
+				background: linear-gradient(
+					135deg,
+					rgba(204, 255, 0, 0.02),
+					transparent
+				);
+				overflow: hidden;
+			}
+			.portfolio-link-inner::before {
+				content: "";
+				position: absolute;
+				top: -50%;
+				left: -50%;
+				width: 200%;
+				height: 200%;
+				background: conic-gradient(
+					from 0deg at 50% 50%,
+					transparent,
+					rgba(204, 255, 0, 0.03),
+					transparent,
+					rgba(204, 255, 0, 0.03),
+					transparent
+				);
+				animation: rotateBorder 8s linear infinite;
+				pointer-events: none;
+			}
+			@keyframes rotateBorder {
+				0% {
+					transform: rotate(0deg);
+				}
+				100% {
+					transform: rotate(360deg);
+				}
+			}
+			.portfolio-link-content {
+				position: relative;
+				z-index: 2;
+			}
+			.eyebrow-row {
+				display: flex;
+				gap: 12px;
+				margin-bottom: 20px;
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			.eyebrow-tag {
+				font-size: 0.6rem;
+				font-weight: 600;
+				letter-spacing: 0.15em;
+				text-transform: uppercase;
+				color: var(--lime);
+				border: 1px solid rgba(204, 255, 0, 0.15);
+				padding: 5px 12px;
+			}
+			.portfolio-link-content h2 {
+				font-family: var(--font-display);
+				font-size: clamp(2rem, 5vw, 4.5rem);
+				font-weight: 800;
+				letter-spacing: -0.02em;
+				line-height: 1.1;
+				margin-bottom: 8px;
+			}
+			.portfolio-link-content h2 .highlight {
+				color: var(--lime);
+				position: relative;
+				display: inline-block;
+			}
+			.portfolio-link-content h2 .highlight::after {
+				content: "";
+				position: absolute;
+				bottom: 4px;
+				left: 0;
+				right: 0;
+				height: 4px;
+				background: var(--lime);
+				transform: scaleX(0);
+				transform-origin: left;
+				transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+			}
+			.portfolio-link-content:hover h2 .highlight::after {
+				transform: scaleX(1);
+			}
+			.portfolio-link-content .desc {
+				color: var(--text-dim);
+				font-size: 1rem;
+				max-width: 520px;
+				margin: 16px auto 32px;
+				line-height: 1.7;
+			}
+			.portfolio-btn-wrap {
+				display: flex;
+				justify-content: center;
+				gap: 16px;
+				flex-wrap: wrap;
+			}
+			.portfolio-btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 12px;
+				padding: 18px 40px;
+				font-family: var(--font-display);
+				font-size: 1rem;
+				font-weight: 700;
+				letter-spacing: 0.03em;
+				border: none;
+				cursor: pointer;
+				transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+				position: relative;
+				overflow: hidden;
+			}
+			.portfolio-btn::before {
+				content: "";
+				position: absolute;
+				inset: 0;
+				background: var(--lime);
+				z-index: -1;
+				transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+			}
+			.portfolio-btn-primary {
+				color: #000;
+				background: var(--lime);
+				border: none;
+			}
+			.portfolio-btn-primary .btn-bg {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: #fff;
+				transform: scaleX(0);
+				transform-origin: left;
+				transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+				z-index: 0;
+			}
+			.portfolio-btn-primary .btn-text {
+				position: relative;
+				z-index: 1;
+			}
+			.portfolio-btn-primary .portfolio-arrow-icon {
+				position: relative;
+				z-index: 1;
+				transition: transform 0.4s;
+			}
+			.portfolio-btn-primary:hover {
+				transform: translateY(-4px);
+				box-shadow: 0 12px 48px rgba(204, 255, 0, 0.3);
+			}
+			.portfolio-btn-primary:hover .btn-bg {
+				transform: scaleX(1);
+			}
+			.portfolio-btn-primary:hover .portfolio-arrow-icon {
+				transform: translateX(6px);
+			}
+			.portfolio-btn-outline {
+				color: var(--text);
+				background: transparent;
+				border: 1px solid var(--border);
+			}
+			.portfolio-btn-outline::before {
+				background: var(--text);
+				transform: scaleX(0);
+				transform-origin: right;
+			}
+			.portfolio-btn-outline:hover {
+				color: #000;
+				border-color: var(--text);
+			}
+			.portfolio-btn-outline:hover::before {
+				transform: scaleX(1);
+				transform-origin: left;
+			}
+			.portfolio-arrow-icon {
+				display: inline-block;
+				transition: transform 0.4s;
+			}
+			.portfolio-btn-primary:hover .portfolio-arrow-icon {
+				transform: translateX(6px);
+			}
+			.portfolio-stats-row {
+				display: flex;
+				justify-content: center;
+				gap: 48px;
+				margin-top: 40px;
+			}
+			.portfolio-stat-item {
+				text-align: center;
+				opacity: 0.7;
+				transition: opacity 0.3s;
+			}
+			.portfolio-stat-item:hover {
+				opacity: 1;
+			}
+			.portfolio-stat-item .num {
+				font-family: var(--font-display);
+				font-size: 1.5rem;
+				font-weight: 800;
+				color: var(--lime);
+			}
+			.portfolio-stat-item .label {
+				font-size: 0.6rem;
+				text-transform: uppercase;
+				letter-spacing: 0.12em;
+				color: var(--text-dim);
+				margin-top: 4px;
+			}
+			.swipe-reveal {
+				position: relative;
+				display: inline-block;
+				overflow: hidden;
+				padding: 0 8px;
+				cursor: pointer;
+				color: var(--text);
+				transition: color 0.5s 0.15s;
+				z-index: 1;
+			}
+			.swipe-reveal::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: var(--lime);
+				transform: translateX(-101%);
+				transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+				z-index: -1;
+			}
+			.portfolio-link-content:hover .swipe-reveal {
+				color: #000;
+			}
+			.portfolio-link-content:hover .swipe-reveal::before {
+				transform: translateX(0);
+			}
+
+			/* ── CONTACT ── */
+			.contact-grid {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 64px;
+			}
+			.contact-info h3 {
+				font-family: var(--font-display);
+				font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+				font-weight: 800;
+				line-height: 1.15;
+				margin-bottom: 16px;
+			}
+			.contact-info p {
+				color: var(--text-dim);
+				font-size: 0.95rem;
+				line-height: 1.7;
+				margin-bottom: 28px;
+			}
+			.contact-detail {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				color: var(--text-dim);
+				font-size: 0.9rem;
+				margin-bottom: 10px;
+				transition: color 0.3s;
+			}
+			.contact-detail:hover {
+				color: var(--text);
+			}
+			.contact-detail .icon {
+				width: 32px;
+				height: 32px;
+				background: var(--bg-card);
+				border: 1px solid var(--border);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 0.85rem;
+			}
+			.contact-form {
+				display: flex;
+				flex-direction: column;
+				gap: 14px;
+			}
+			.contact-form input,
+			.contact-form textarea {
+				width: 100%;
+				padding: 14px 18px;
+				border: 1px solid var(--border);
+				background: var(--bg-card);
+				color: var(--text);
+				font-family: var(--font-sans);
+				font-size: 0.9rem;
+				outline: none;
+				transition:
+					border-color 0.3s,
+					background 0.3s;
+			}
+			.contact-form input:focus,
+			.contact-form textarea:focus {
+				border-color: var(--lime);
+				background: #151515;
+			}
+			.contact-form textarea {
+				min-height: 120px;
+				resize: vertical;
+			}
+			.contact-form .btn {
+				align-self: flex-start;
+			}
+
+			/* ── FOOTER ── */
+			footer {
+				border-top: 1px solid var(--border);
+				padding: 48px 0 28px;
+			}
+			.footer-grid {
+				display: grid;
+				grid-template-columns: 2fr 1fr 1fr 1fr;
+				gap: 40px;
+				margin-bottom: 40px;
+			}
+			.footer-brand .logo {
+				font-family: var(--font-display);
+				font-weight: 700;
+				font-size: 1.1rem;
+				letter-spacing: 0.12em;
+				margin-bottom: 12px;
+			}
+			.footer-brand .logo span {
+				color: var(--lime);
+			}
+			.footer-brand p {
+				font-size: 0.85rem;
+				color: var(--text-dim);
+				max-width: 300px;
+				line-height: 1.6;
+			}
+			.footer-col h5 {
+				font-size: 0.7rem;
+				font-weight: 600;
+				letter-spacing: 0.15em;
+				text-transform: uppercase;
+				color: var(--text-dim);
+				margin-bottom: 16px;
+			}
+			.footer-col ul {
+				list-style: none;
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+			}
+			.footer-col a {
+				font-size: 0.85rem;
+				color: var(--text-dim);
+				transition: color 0.3s;
+			}
+			.footer-col a:hover {
+				color: var(--lime);
+			}
+			.footer-bottom {
+				padding-top: 20px;
+				border-top: 1px solid var(--border);
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				font-size: 0.75rem;
+				color: var(--text-dim);
+			}
+			.footer-socials {
+				display: flex;
+				gap: 16px;
+			}
+			.footer-socials a {
+				color: var(--text-dim);
+				transition: color 0.3s;
+			}
+			.footer-socials a:hover {
+				color: var(--lime);
+			}
+			.footer-gh-logo {
+				height: 50px;
+				width: auto;
+				opacity: 0.6;
+				transition: opacity 0.3s;
+			}
+			.footer-gh-logo:hover {
+				opacity: 1;
+			}
+
+			/* ── EMAIL POPUP ── */
+			.email-popup-overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 9998;
+				pointer-events: none;
+				opacity: 0;
+				transition: opacity 0.3s;
+			}
+			.email-popup-overlay.active {
+				pointer-events: all;
+				opacity: 1;
+			}
+			.email-popup {
+				position: absolute;
+				width: 320px;
+				padding: 28px;
+				background: #151515;
+				border: 1px solid var(--border);
+				z-index: 9999;
+				pointer-events: all;
+			}
+			.email-popup p {
+				font-size: 0.85rem;
+				color: var(--text-dim);
+				line-height: 1.7;
+				margin-bottom: 20px;
+			}
+			.email-popup .portfolio-btn {
+				width: 100%;
+				justify-content: center;
+			}
+
+			/* ── RESPONSIVE ── */
+			@media (max-width: 1024px) {
+				.services-grid {
+					grid-template-columns: repeat(2, 1fr);
+				}
+				.projects-grid {
+					grid-template-columns: repeat(2, 1fr);
+				}
+				.about-wrap,
+				.contact-grid {
+					grid-template-columns: 1fr;
+					gap: 40px;
+				}
+				.footer-grid {
+					grid-template-columns: 1fr 1fr;
+				}
+				.portfolio-stats-row {
+					gap: 32px;
+				}
+			}
+			@media (max-width: 768px) {
+				.container {
+					padding: 0 24px;
+				}
+				nav {
+					padding: 16px 24px;
+				}
+				.nav-links {
+					display: none;
+				}
+				.nav-cta {
+					display: inline-flex;
+				}
+				section {
+					padding: 64px 0;
+				}
+				.section-header {
+					margin-bottom: 40px;
+				}
+				.services-grid {
+					grid-template-columns: 1fr;
+				}
+				.projects-grid {
+					grid-template-columns: 1fr;
+				}
+				.split-section {
+					grid-template-columns: 1fr;
+				}
+				.split-item {
+					padding: 40px 28px;
+				}
+				.stats {
+					grid-template-columns: repeat(3, 1fr);
+					gap: 12px;
+				}
+				.footer-grid {
+					grid-template-columns: 1fr;
+					gap: 28px;
+				}
+				.footer-bottom {
+					flex-direction: column;
+					gap: 12px;
+					text-align: center;
+				}
+				.hero {
+					padding: 100px 0 40px;
+				}
+				.portfolio-link-inner {
+					padding: 48px 24px;
+				}
+				.portfolio-stats-row {
+					flex-wrap: wrap;
+					gap: 24px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<!-- ─── CURSOR GLOW ─── -->
+		<div class="ambient-orb ambient-orb-1"></div>
+		<div class="ambient-orb ambient-orb-2"></div>
+		<div class="ambient-orb ambient-orb-3"></div>
+		<div class="cursor-glow" id="cursorGlow"></div>
+		<div class="cursor-dot" id="cursorDot"></div>
+		<div class="cursor-ring" id="cursorRing"></div>
+
+		<!-- ─── NAV ─── -->
+		<nav id="nav">
+			<a href="#" class="nav-logo">AKSHAY<span>.</span></a>
+			<ul class="nav-links">
+				<li><a href="#services">Services</a></li>
+				<li><a href="#about">About</a></li>
+				<li>
+					<a
+						href="https://akshay-keerth.pages.dev"
+						target="_blank"
+						class="nav-cta"
+						><span class="nav-cta-text">Live portfolio ↗</span></a
+					>
+				</li>
+			</ul>
+		</nav>
+
+		<!-- ─── HERO ─── -->
+		<section class="hero" id="home">
+			<div class="hero-bg-grid"></div>
+			<div class="hero-bg-grid-focus" id="gridFocus"></div>
+			<div class="hero-shine"></div>
+			<div class="container hero-content">
+				<div class="hero-tag">Creative Developer & Designer</div>
+				<h1>
+					<span class="line"><span>Digital</span></span>
+					<span class="line"><span>Experiences</span></span>
+					<span class="line"
+						><span class="highlight">Creator</span></span
+					>
+				</h1>
+				<p>
+					I craft immersive digital experiences with cutting-edge
+					technologies, blending ultra-modern design with seamless
+					interactions.
+				</p>
+				<div class="hero-actions">
+					<a
+						href="https://akshay-keerth.pages.dev"
+						target="_blank"
+						class="btn btn-primary"
+						>View My Work</a
+					>
+					<a
+						href="https://akshay-keerth.pages.dev"
+						target="_blank"
+						class="btn btn-outline"
+						>Get In Touch</a
+					>
+				</div>
+			</div>
+			<div class="hero-scroll">
+				<span>Scroll</span>
+				<div class="scroll-indicator"></div>
+			</div>
+		</section>
+
+		<!-- ─── MARQUEE ─── -->
+		<div class="marquee-wrap">
+			<div class="marquee">
+				<div class="marquee-item">
+					<span class="dot"></span> Web Development
+					<span class="dot"></span> Creative Coding
+					<span class="dot"></span> WebGL Effects
+					<span class="dot"></span> Interactive Design
+					<span class="dot"></span> Brand Identity
+					<span class="dot"></span> Motion Design
+					<span class="dot"></span> 3D Design
+					<span class="dot"></span> UI Animation
+				</div>
+				<div class="marquee-item">
+					<span class="dot"></span> Web Development
+					<span class="dot"></span> Creative Coding
+					<span class="dot"></span> WebGL Effects
+					<span class="dot"></span> Interactive Design
+					<span class="dot"></span> Brand Identity
+					<span class="dot"></span> Motion Design
+					<span class="dot"></span> 3D Design
+					<span class="dot"></span> UI Animation
+				</div>
+			</div>
+		</div>
+
+		<!-- ─── SERVICES ─── -->
+		<section id="services">
+			<div class="container">
+				<div class="section-header reveal">
+					<div class="section-label">What I Do</div>
+					<h2>
+						Turning ideas into<br /><span class="highlight"
+							>digital reality</span
+						>
+					</h2>
+					<p>
+						Every project is crafted with precision, blending
+						aesthetics with performance.
+					</p>
+				</div>
+				<div class="services-grid">
+					<div class="service-card reveal">
+						<div class="service-num">01</div>
+						<h3>Web Development</h3>
+						<p>
+							Building immersive digital experiences with
+							cutting-edge technologies and seamless interactions.
+						</p>
+					</div>
+					<div class="service-card reveal">
+						<div class="service-num">02</div>
+						<h3>Brand Identity</h3>
+						<p>
+							Creating memorable brand experiences that resonate
+							with audiences and stand the test of time.
+						</p>
+					</div>
+					<div class="service-card reveal">
+						<div class="service-num">03</div>
+						<h3>UI/UX Design</h3>
+						<p>
+							Designing intuitive interfaces that blend aesthetics
+							with functionality for optimal user experiences.
+						</p>
+					</div>
+					<div class="service-card reveal">
+						<div class="service-num">04</div>
+						<h3>Motion Design</h3>
+						<p>
+							Bringing designs to life with captivating animations
+							that engage and delight users.
+						</p>
+					</div>
+					<div class="service-card reveal">
+						<div class="service-num">05</div>
+						<h3>3D Design</h3>
+						<p>
+							Creating immersive three-dimensional experiences and
+							assets for digital platforms.
+						</p>
+					</div>
+					<div class="service-card reveal">
+						<div class="service-num">06</div>
+						<h3>Creative Strategy</h3>
+						<p>
+							Developing innovative brand strategies that connect
+							with audiences and drive growth.
+						</p>
+					</div>
+					<div class="service-card reveal">
+						<div class="service-num">07</div>
+						<h3>UI Animation</h3>
+						<p>
+							Crafting smooth, meaningful micro-interactions that
+							elevate user experience.
+						</p>
+					</div>
+					<div class="service-card reveal">
+						<div class="service-num">08</div>
+						<h3>Frontend Architecture</h3>
+						<p>
+							Building scalable, performant frontend systems with
+							modern technologies.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ─── ABOUT ─── -->
+		<section id="about">
+			<div class="container">
+				<div class="about-wrap">
+					<div class="about-text">
+						<div class="section-label">About Me</div>
+						<h3>
+							I'm Akshay Keerth, a 15-year-old creative developer
+							building the future of the web.
+						</h3>
+						<p>
+							I specialize in crafting immersive digital
+							experiences that push the boundaries of web design.
+							From ultra-modern 3D-like virtual experiences to
+							custom interactive designs, I transform complex
+							ideas into elegant digital solutions. My clients
+							emphasize that I get the right work done with insane
+							accuracy and custom designs that blow their minds.
+						</p>
+						<div class="stats">
+							<div class="stat">
+								<h4>15</h4>
+								<p>Years Old</p>
+							</div>
+							<div class="stat">
+								<h4>64+</h4>
+								<p>Projects</p>
+							</div>
+							<div class="stat">
+								<h4>97.3%</h4>
+								<p>Client Satisfaction</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ─── PORTFOLIO LINK (Awwwards-style hero section) ─── -->
+		<div class="portfolio-link-section">
+			<div class="container">
+				<div class="portfolio-link-inner reveal-scale">
+					<div class="portfolio-link-content">
+						<div class="eyebrow-row">
+							<span class="eyebrow-tag"
+								>13 Awards for minimalistic design</span
+							>
+							<span class="eyebrow-tag"
+								>145+ Clients satisfied</span
+							>
+						</div>
+						<h2>
+							View my<br />
+							<span class="swipe-reveal">real portfolio</span>
+							<span class="highlight">&nbsp;→</span>
+						</h2>
+						<p class="desc">
+							Explore the full collection of my award-nominated
+							work — immersive 3D experiences, WebGL experiments,
+							and cutting-edge interactive designs that define the
+							future of the web.
+						</p>
+						<div class="portfolio-btn-wrap">
+							<a
+								href="https://akshay-keerth.pages.dev"
+								target="_blank"
+								class="portfolio-btn portfolio-btn-primary"
+							>
+								<span class="btn-bg"></span>
+								<span class="btn-text"
+									>Visit Live Portfolio</span
+								>
+								<span class="portfolio-arrow-icon">↗</span>
+							</a>
+						</div>
+						<div class="portfolio-stats-row">
+							<div class="portfolio-stat-item">
+								<div class="num">64+</div>
+								<div class="label">Projects</div>
+							</div>
+							<div class="portfolio-stat-item">
+								<div class="num">4+</div>
+								<div class="label">Years Exp</div>
+							</div>
+							<div class="portfolio-stat-item">
+								<div class="num">97.3%</div>
+								<div class="label">Satisfaction</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- ─── SPLIT SECTION (Lando Norris inspired) ─── -->
+		<div class="container">
+			<div class="split-section reveal">
+				<div class="split-item">
+					<div class="big">
+						ON<br /><span class="highlight">TRACK</span>
+					</div>
+					<div class="sub">Latest projects &amp; case studies</div>
+				</div>
+				<div class="split-item">
+					<div class="big">
+						OFF<br /><span class="highlight">TRACK</span>
+					</div>
+					<div class="sub">
+						Experiments &amp; creative explorations
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- ─── EMAIL POPUP ─── -->
+		<div class="email-popup-overlay" id="emailPopup">
+			<div class="email-popup">
+				<p>
+					This will open my full portfolio website. Once there, scroll
+					down to the contact section.
+				</p>
+				<a
+					href="https://akshay-keerth.pages.dev"
+					target="_blank"
+					class="portfolio-btn portfolio-btn-primary"
+					onclick="closePopup()"
+				>
+					<span class="btn-bg"></span>
+					<span class="btn-text">Visit Portfolio</span>
+					<span class="portfolio-arrow-icon">↗</span>
+				</a>
+			</div>
+		</div>
+
+		<!-- ─── FOOTER ─── -->
+		<footer>
+			<div class="container">
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<div class="logo">AKSHAY<span>.</span></div>
+						<p>
+							Creative developer crafting immersive digital
+							experiences that push the boundaries of web design.
+						</p>
+					</div>
+					<div class="footer-col">
+						<h5>Navigation</h5>
+						<ul>
+							<li><a href="#home">Home</a></li>
+							<li><a href="#services">Services</a></li>
+							<li><a href="#work">Work</a></li>
+							<li><a href="#about">About</a></li>
+							<li><a href="#contact">Contact</a></li>
+						</ul>
+					</div>
+					<div class="footer-col">
+						<h5>Social</h5>
+						<ul>
+							<li>
+								<a
+									href="https://github.com/AkshayKeerth"
+									target="_blank"
+									>GitHub</a
+								>
+							</li>
+						</ul>
+					</div>
+					<div class="footer-col">
+						<h5>Contact</h5>
+						<ul>
+							<li><a href="#" id="emailBtn">Email</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="footer-bottom">
+					<span>&copy; 2026 Akshay Keerth. All rights reserved.</span>
+					<div class="footer-socials">
+						<a
+							href="https://github.com/AkshayKeerth"
+							target="_blank"
+							><img
+								src="git-logo/git-logo-green.png"
+								alt="GitHub"
+								class="footer-gh-logo"
+						/></a>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			// ─── CURSOR ───
+			const glow = document.getElementById("cursorGlow");
+			const dot = document.getElementById("cursorDot");
+			const ring = document.getElementById("cursorRing");
+			const gridFocus = document.getElementById("gridFocus");
+			let mx = 0,
+				my = 0;
+			let rx = 0,
+				ry = 0;
+			document.addEventListener("mousemove", (e) => {
+				mx = e.clientX;
+				my = e.clientY;
+				dot.style.left = mx + "px";
+				dot.style.top = my + "px";
+				glow.style.left = mx + "px";
+				glow.style.top = my + "px";
+				if (gridFocus) {
+					gridFocus.style.maskImage = `radial-gradient(ellipse 180px 180px at ${mx}px ${my}px, black 30%, transparent 70%)`;
+					gridFocus.style.webkitMaskImage = `radial-gradient(ellipse 180px 180px at ${mx}px ${my}px, black 30%, transparent 70%)`;
+				}
+			});
+			function cursorSmooth() {
+				rx += (mx - rx) * 0.12;
+				ry += (my - ry) * 0.12;
+				ring.style.left = rx + "px";
+				ring.style.top = ry + "px";
+				requestAnimationFrame(cursorSmooth);
+			}
+			cursorSmooth();
+			document
+				.querySelectorAll(
+					"a, button, .project-card, .service-card, .split-item, .portfolio-btn",
+				)
+				.forEach((el) => {
+					el.addEventListener("mouseenter", () => {
+						ring.style.width = "48px";
+						ring.style.height = "48px";
+						ring.style.borderColor = "var(--lime)";
+						ring.style.background = "rgba(204,255,0,0.06)";
+					});
+					el.addEventListener("mouseleave", () => {
+						ring.style.width = "32px";
+						ring.style.height = "32px";
+						ring.style.borderColor = "rgba(204,255,0,0.3)";
+						ring.style.background = "transparent";
+					});
+				});
+
+			// ─── NAV SCROLL ───
+			const nav = document.getElementById("nav");
+			window.addEventListener("scroll", () => {
+				nav.classList.toggle("scrolled", window.scrollY > 60);
+			});
+
+			// ─── INTERSECTION OBSERVER ───
+			const revealEls = document.querySelectorAll(
+				".reveal, .reveal-scale, .reveal-left, .reveal-right",
+			);
+			const observer = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("visible");
+						}
+					});
+				},
+				{ threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+			);
+			revealEls.forEach((el) => observer.observe(el));
+
+			// ─── EMAIL POPUP ───
+			const emailBtn = document.getElementById("emailBtn");
+			const popup = document.getElementById("emailPopup");
+			if (!emailBtn || !popup)
+				document.documentElement.style.setProperty("--x", "0");
+			emailBtn &&
+				emailBtn.addEventListener("click", (e) => {
+					e.preventDefault();
+					const rect = emailBtn.getBoundingClientRect();
+					popup.classList.add("active");
+					const popupEl = popup.querySelector(".email-popup");
+					popupEl.style.left =
+						Math.min(rect.right + 12, window.innerWidth - 340) +
+						"px";
+					popupEl.style.top = Math.max(rect.top - 60, 20) + "px";
+				});
+			document.addEventListener("click", (e) => {
+				if (
+					popup.classList.contains("active") &&
+					!popup.querySelector(".email-popup").contains(e.target) &&
+					e.target !== emailBtn
+				) {
+					popup.classList.remove("active");
+				}
+			});
+			function closePopup() {
+				popup.classList.remove("active");
+			}
+
+			// ─── SMOOTH LINKS ───
+			document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+				anchor.addEventListener("click", function (e) {
+					const target = document.querySelector(
+						this.getAttribute("href"),
+					);
+					if (target) {
+						e.preventDefault();
+						target.scrollIntoView({
+							behavior: "smooth",
+							block: "start",
+						});
+					}
+				});
+			});
+
+			// ─── PARALLAX ON SCROLL ───
+			const parallaxEls = document.querySelectorAll(
+				".hero-shine, .project-card, .split-item",
+			);
+			window.addEventListener("scroll", () => {
+				const sy = window.scrollY;
+				parallaxEls.forEach((el, i) => {
+					const rect = el.getBoundingClientRect();
+					const center = rect.top + rect.height / 2;
+					const viewCenter = window.innerHeight / 2;
+					const offset = (center - viewCenter) * 0.025;
+					el.style.transform = el.style.transform || "";
+					if (el.classList.contains("hero-shine")) {
+						el.style.transform = `translate(-50%, ${offset * 0.3}px)`;
+					} else if (!el.classList.contains("visible")) {
+						return;
+					} else {
+						el.style.transform = `translateY(${offset}px)`;
+					}
+				});
+			});
+
+			// ─── TILT ON CARDS ───
+			document
+				.querySelectorAll(".project-card, .split-item")
+				.forEach((el) => {
+					el.addEventListener("mousemove", (e) => {
+						const rect = el.getBoundingClientRect();
+						const x = (e.clientX - rect.left) / rect.width - 0.5;
+						const y = (e.clientY - rect.top) / rect.height - 0.5;
+						el.style.transform = `perspective(800px) rotateY(${x * 6}deg) rotateX(${y * -6}deg) translateY(${el.classList.contains("visible") ? 0 : 0}px)`;
+					});
+					el.addEventListener("mouseleave", () => {
+						el.style.transform = "";
+					});
+				});
+
+			// ─── STAGGER REVEAL ───
+			const staggerEls = document.querySelectorAll(
+				".service-card, .project-card",
+			);
+			const staggerObserver = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((entry) => {
+						if (entry.isIntersecting) {
+							const siblings = [
+								...entry.target.parentElement.children,
+							];
+							const idx = siblings.indexOf(entry.target);
+							entry.target.style.transitionDelay =
+								idx * 0.06 + "s";
+							entry.target.classList.add("visible");
+						}
+					});
+				},
+				{ threshold: 0.08 },
+			);
+			staggerEls.forEach((el) => staggerObserver.observe(el));
+		</script>
+	</body>
+</html>
